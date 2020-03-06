@@ -11,20 +11,20 @@ from subprocess import check_output
 mem_types = ["Private_Clean", "Private_Dirty", "Shared_Clean", "Shared_Dirty"]
 
 def usage():
-    print """
+    print("""
 usage: parse_smaps.py [-p process_name] [-t memory_type] [-h] [smaps_filename]
 
 example: parse_smaps.py /proc/12424/smaps
          parse_smaps.py -p smbd
          parse_smaps.py -p smbd -t Pss
          parse_smaps.py -p smbd -t Private (the line starts with "Private")
-"""
+""")
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "p:t:ah", ["process-name=", "memory-type=", "all", "help"])
     except getopt.GetoptError as err:
-        print err
+        print(err)
         usage()
         sys.exit(2)
 
@@ -48,9 +48,9 @@ def main():
         smaps_file = os.path.abspath(args[0])
     else:
         try:
-            pid = str(check_output(["pidof", ps_name])).strip().split()[0]
+            pid = str(check_output(["pidof", ps_name]).decode()).strip().split()[0]
         except:
-            print "pidof failed or no such process[{0}]".format(ps_name)
+            print("pidof failed or no such process[{0}]".format(ps_name))
             sys.exit(1)
 
         smaps_file = "/proc/" + pid + "/smaps"
@@ -89,18 +89,18 @@ def main():
             arr.append((v, k))
             total = list(map(sum, zip(total, v)))
 
-        arr.sort(cmp=lambda x,y: cmp(sum(y[0]), sum(x[0])))
+        arr.sort(key=lambda x: sum(x[0]), reverse=True)
 
-        print "==============================================================================="
-        print "{:^8}   {:^8}   {:^8}   {:^8}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0])
-        print "{:^8} + {:^8} + {:^8} + {:^8} = {:^8} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total")
-        print "==============================================================================="
+        print("===============================================================================")
+        print("{:^8}   {:^8}   {:^8}   {:^8}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0]))
+        print("{:^8} + {:^8} + {:^8} + {:^8} = {:^8} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total"))
+        print("===============================================================================")
 
         for tup in arr:
-            print "{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0]), tup[1])
+            print("{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0]), tup[1]))
 
-        print "==============================================================================="
-        print "{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : Total".format(total[0], total[1], total[2], total[3], sum(total))
+        print("===============================================================================")
+        print("{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : Total".format(total[0], total[1], total[2], total[3], sum(total)))
 
     else:
         arr = []
@@ -113,10 +113,10 @@ def main():
         arr.sort(reverse=True)
 
         for tup in arr:
-            print "{:>5} kB {:<}".format(tup[0], tup[1])
+            print("{:>5} kB {:<}".format(tup[0], tup[1]))
 
-        print "====================="
-        print "Total: {0} kB".format(total)
+        print("=====================")
+        print("Total: {0} kB".format(total))
 
 if __name__ == "__main__":
     main()
