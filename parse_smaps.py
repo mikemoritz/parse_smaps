@@ -64,7 +64,7 @@ def main():
                 if len(line_arr) < 6:
                     filename = "[anonymous]"
                 else:
-                    filename = line_arr[5].split('/').pop()
+                    filename = line_arr[5]
 
             elif mem_type == "":
                 for idx, name in enumerate(mem_types):
