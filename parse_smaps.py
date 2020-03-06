@@ -72,7 +72,7 @@ def main():
                         if filename in fileinfo:
                             fileinfo[filename][idx] += int(line.split()[1])
                         else:
-                            fileinfo[filename] = [0] * 4;
+                            fileinfo[filename] = [0] * 4
                             fileinfo[filename][idx] += int(line.split()[1])
 
             elif line.lower().startswith(mem_type.lower()):
@@ -91,16 +91,16 @@ def main():
 
         arr.sort(key=lambda x: sum(x[0]), reverse=True)
 
-        print("===============================================================================")
-        print("{:^8}   {:^8}   {:^8}   {:^8}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0]))
-        print("{:^8} + {:^8} + {:^8} + {:^8} = {:^8} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total"))
-        print("===============================================================================")
+        print("========================================================================================")
+        print("{:^15}   {:^15}   {:^15}   {:^15}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0]))
+        print("{:^15} + {:^15} + {:^15} + {:^15} = {:^15} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total"))
+        print("========================================================================================")
 
         for tup in arr:
-            print("{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0]), tup[1]))
+            print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0]), tup[1]))
 
-        print("===============================================================================")
-        print("{:>5} kB + {:>5} kB + {:>5} kB + {:>5} kB = {:>5} kB : Total".format(total[0], total[1], total[2], total[3], sum(total)))
+        print("========================================================================================")
+        print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB : Total".format(total[0], total[1], total[2], total[3], sum(total)))
 
     else:
         arr = []
@@ -113,7 +113,7 @@ def main():
         arr.sort(reverse=True)
 
         for tup in arr:
-            print("{:>5} kB {:<}".format(tup[0], tup[1]))
+            print("{:>12} kB {:<}".format(tup[0], tup[1]))
 
         print("=====================")
         print("Total: {0} kB".format(total))
