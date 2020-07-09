@@ -8,7 +8,7 @@ import os
 import getopt
 from subprocess import check_output
 
-mem_types = ["Private_Clean", "Private_Dirty", "Shared_Clean", "Shared_Dirty"]
+mem_types = ["Private_Clean", "Private_Dirty", "Shared_Clean", "Shared_Dirty", "Locked"]
 
 def usage():
     print("""
@@ -72,7 +72,7 @@ def main():
                         if filename in fileinfo:
                             fileinfo[filename][idx] += int(line.split()[1])
                         else:
-                            fileinfo[filename] = [0] * 4
+                            fileinfo[filename] = [0] * 5
                             fileinfo[filename][idx] += int(line.split()[1])
 
             elif line.lower().startswith(mem_type.lower()):
@@ -81,9 +81,11 @@ def main():
                 else:
                     fileinfo[filename] = int(line.split()[1])
 
+            # print('foo')
+
     if mem_type == "":
         arr = []
-        total = [0] * 4
+        total = [0] * 5
 
         for k, v in fileinfo.items():
             arr.append((v, k))
@@ -91,16 +93,16 @@ def main():
 
         arr.sort(key=lambda x: sum(x[0]), reverse=True)
 
-        print("========================================================================================")
-        print("{:^15}   {:^15}   {:^15}   {:^15}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0]))
-        print("{:^15} + {:^15} + {:^15} + {:^15} = {:^15} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total"))
-        print("========================================================================================")
+        print("=========================================================================================================")
+        print("{:^15}   {:^15}   {:^15}   {:^15}   {:^15}".format(mem_types[0].split('_')[0], mem_types[1].split('_')[0], mem_types[2].split('_')[0], mem_types[3].split('_')[0], mem_types[4].split('_')[0]))
+        print("{:^15} + {:^15} + {:^15} + {:^15} = {:^15}   {:^15} : library".format(mem_types[0].split('_')[1], mem_types[1].split('_')[1], mem_types[2].split('_')[1], mem_types[3].split('_')[1], "Total", mem_types[4].split('_')[0]))
+        print("=========================================================================================================")
 
         for tup in arr:
-            print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0]), tup[1]))
+            print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB   {:>12} kB : {:<}".format(tup[0][0], tup[0][1], tup[0][2], tup[0][3], sum(tup[0][:4]), tup[0][4], tup[1]))
 
-        print("========================================================================================")
-        print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB : Total".format(total[0], total[1], total[2], total[3], sum(total)))
+        print("=========================================================================================================")
+        print("{:>12} kB + {:>12} kB + {:>12} kB + {:>12} kB = {:>12} kB   {:>12} kB : Total".format(total[0], total[1], total[2], total[3], sum(total[:4]), total[4]))
 
     else:
         arr = []
